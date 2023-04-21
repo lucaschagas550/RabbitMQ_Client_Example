@@ -19,6 +19,7 @@ namespace RabbitMQ_Package_Oficial_Example
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddMessageBus(rabbitMQConfiguration);
+            services.Configure<RabbitMQConfiguration>(Configuration.GetSection("RabbitMQ"));
         }
 
         public static void Configure(WebApplication app, IWebHostEnvironment env)

@@ -1,6 +1,6 @@
 ﻿using MessageBus.Extensions;
-using MessageBus.MessageBus;
 using RabbitMQ_Integration_Example.Service;
+using MessageBus.MessageBus;
 
 namespace RabbitMQ_Integration_Example
 {

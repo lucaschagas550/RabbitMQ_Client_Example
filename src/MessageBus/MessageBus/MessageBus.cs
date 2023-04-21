@@ -37,10 +37,10 @@ namespace MessageBus.MessageBus
         public EventingBasicConsumer CreateBasicConsumer(IModel channel) =>
             new EventingBasicConsumer(channel);
 
-        public IModel CreateChannel(string queue, string exchangeName, ExchangeType exchangeType, string? routingKey = "")
+        public IModel CreateChannel(string queue, string exchangeName, ExchangeType exchangeType, bool isAutoDelete = false, string? routingKey = "")
         {
             var channel = _connection?.CreateModel();
-            QueueSetup(exchangeName, exchangeType, queue, routingKey, channel);
+            QueueSetup(exchangeName, exchangeType, queue, routingKey, channel, isAutoDelete);
 
             _channel = channel;
             return channel;
@@ -55,10 +55,10 @@ namespace MessageBus.MessageBus
         public void BasicConsume(string queue, bool autoAck, EventingBasicConsumer consumer) =>
             _channel.BasicConsume(queue, autoAck, consumer);
 
-        private static void QueueSetup(string exchangeName, ExchangeType exchangeType, string queue, string? routingKey, IModel? channel)
+        private static void QueueSetup(string exchangeName, ExchangeType exchangeType, string queue, string? routingKey, IModel? channel, bool isAutoDelete = false)
         {
             channel?.ExchangeDeclare(exchangeName, exchangeType.ToString(), true);
-            channel?.QueueDeclare(queue, true, false, false, null);
+            channel?.QueueDeclare(queue, true, false, isAutoDelete, null);
             channel?.QueueBind(queue, exchangeName, routingKey);
         }
 

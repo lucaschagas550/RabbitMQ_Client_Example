@@ -6,6 +6,7 @@ namespace RabbitMQ_Integration_Example.Service
 {
     public class IntegrationHandler : BackgroundService
     {
+        private int TotalMessagesReceived = 0;
         private readonly IMessageBus _bus;
 
         public IntegrationHandler(IMessageBus bus) =>
@@ -23,17 +24,22 @@ namespace RabbitMQ_Integration_Example.Service
         private void SetSubscribers()
         {
             var personConsumer = _bus.CreateBasicConsumer(
-                _bus.CreateChannel($"{nameof(PersonIntegration)}Queue", $"{nameof(PersonIntegration)}Exchange", ExchangeType.topic, $"{nameof(PersonIntegration)}Key"));
+                _bus.CreateChannel($"{nameof(PersonIntegration)}Queue", $"{nameof(PersonIntegration)}Exchange", ExchangeType.topic, false, $"{nameof(PersonIntegration)}Key"));
             
             var carConsumer = _bus.CreateBasicConsumer(
-                _bus.CreateChannel($"{nameof(CarIntegration)}Queue", $"{nameof(PersonIntegration)}Exchange", ExchangeType.topic, $"{nameof(CarIntegration)}Key"));
+                _bus.CreateChannel($"{nameof(CarIntegration)}Queue", $"{nameof(PersonIntegration)}Exchange", ExchangeType.topic, false,$"{nameof(CarIntegration)}Key"));
 
             personConsumer.Received += (channel, eventArgs) =>
             {
                 var content = _bus.GetMessageContent<PersonIntegration>(eventArgs);
                 _bus?.GetChannel()?.BasicAck(eventArgs.DeliveryTag, false);
-                Debug.WriteLine($"Person => {DateTime.Now}: {content.Name} {content.Age}");
-                Console.WriteLine($"Person => {DateTime.Now}: {content.Name} {content.Age}");
+                TotalMessagesReceived++;
+                
+                Debug.WriteLine($"Person => {DateTime.Now}: {content.Name} {content.Age} {content.Date} {content.Timestamp}");
+                Console.WriteLine($"Person => {DateTime.Now}: {content.Name} {content.Age} {content.Timestamp}");
+
+                Console.WriteLine($"Total messages Received: {TotalMessagesReceived} \n Total time: {DateTime.Now - content.Date}");
+                Debug.WriteLine($"Total messages Received: {TotalMessagesReceived} \n Total time: {DateTime.Now - content.Date}");
 
                 //Enviar outra messagem ou disparar algum evento abaixo se desejar apos obter a messagem serializada
             };

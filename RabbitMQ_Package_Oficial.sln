@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ_Package_Oficial_Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBus", "src\MessageBus\MessageBus.csproj", "{93F107C1-0C62-4F19-8646-56AF10C7DAAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ_Integration_Example", "src\RabbitMQ_Integration_Example\RabbitMQ_Integration_Example.csproj", "{61BBADA5-0174-480E-9211-92A09EDCDADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ_Integration_Example", "src\RabbitMQ_Integration_Example\RabbitMQ_Integration_Example.csproj", "{61BBADA5-0174-480E-9211-92A09EDCDADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
